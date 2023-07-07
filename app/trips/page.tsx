@@ -1,3 +1,4 @@
+import { Metadata } from "next"
 import { EmptyState } from "../components/empty-state"
 import { getCurrentUser } from "../services/get-current-user"
 import { getReservations } from "../services/get-reservations"
@@ -29,3 +30,8 @@ const TripsPage = async () => {
 }
 
 export default TripsPage
+
+export const metadata:Metadata = {
+  title: "My Trips",
+  description: "all of my trips are here"
+}

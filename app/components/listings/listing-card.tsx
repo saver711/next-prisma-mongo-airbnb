@@ -3,14 +3,14 @@
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useCallback, useMemo } from "react"
-import { format } from "date-fns"
+// import { format } from "date-fns"
 
 
 import { Button } from "../button"
 import useCountries from "@/app/hooks/use-countries"
 import { Listing, Reservation, User } from "@prisma/client"
 import { HeartButton } from "../heart-button"
-import {getDate} from "date-fns"
+import { utcToZonedTime, getTimezoneOffset, format } from "date-fns-tz"
 
 interface ListingCardProps {
   data: Listing
@@ -62,8 +62,8 @@ export const ListingCard: React.FC<ListingCardProps> = ({
       return null
     }
 
-    const start = new Date(reservation.startDate)
-    const end = new Date(reservation.endDate)
+    const start = reservation.startDate
+    const end = reservation.endDate
 
     return `${format(start, "PP")} - ${format(end, "PP")}`
   }, [reservation])

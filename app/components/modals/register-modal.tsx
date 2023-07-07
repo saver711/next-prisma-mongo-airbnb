@@ -43,8 +43,12 @@ export const RegisterModal = () => {
 
     axios
       .post("/api/register", data)
-      .then(({ data }: { data: User }) => {
-        toast.success(`Registered successfully, Welcome ${data.name}`)
+      .then(({ data: comingData }: { data: User }) => {
+        toast.success(`Registered successfully, Welcome ${comingData.name}`)
+        signIn("credentials", {
+          email: data.email,
+          password: data.password
+        })
         onClose()
       })
       .catch((err) => {

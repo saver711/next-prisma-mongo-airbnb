@@ -14,16 +14,17 @@ import ListingReservation from "@/app/components/listings/listing-reservation"
 import { useLoginModal } from "@/app/hooks/use-login-modal"
 import { categories } from "@/app/static/categories"
 import { SafeListing, SafeReservation, SafeUser } from "@/app/types"
-import { User } from "@prisma/client"
+import { Reservation, User } from "@prisma/client"
+import { timezoneDate } from "@/app/helpers/timezone-date"
 
-const initialDateRange = {
-  startDate: new Date(),
-  endDate: new Date(),
+export const initialDateRange = {
+  startDate: timezoneDate(new Date()),
+  endDate: timezoneDate(new Date()),
   key: "selection",
 }
 
 type ListingClientProps = {
-  reservations?: SafeReservation[]
+  reservations?: Reservation[]
   listing: SafeListing & {
     user: SafeUser
   }
@@ -35,7 +36,7 @@ export const ListingClient = ({
   reservations = [],
   currentUser,
 }: ListingClientProps) => {
-  const loginModalOnOpen = useLoginModal(state=>state.onOpen)
+  const loginModalOnOpen = useLoginModal((state) => state.onOpen)
   const router = useRouter()
 
   const disabledDates = useMemo(() => {
@@ -43,8 +44,8 @@ export const ListingClient = ({
 
     reservations.forEach((reservation) => {
       const range = eachDayOfInterval({
-        start: new Date(reservation.startDate),
-        end: new Date(reservation.endDate),
+        start: timezoneDate(reservation.startDate),
+        end: timezoneDate(reservation.endDate),
       })
 
       dates = [...dates, ...range]

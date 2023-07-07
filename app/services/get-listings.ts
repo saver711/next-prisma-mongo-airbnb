@@ -83,3 +83,18 @@ export const getListings = async (params: IListingsParams) => {
     throw new Error(error)
   }
 }
+
+
+export const getAllListings = async () => {
+  try {
+    const listings = await prismadb.listing.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+
+    return listings
+  } catch (error: any) {
+    throw new Error(error)
+  }
+}

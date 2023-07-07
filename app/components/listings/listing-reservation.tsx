@@ -3,6 +3,7 @@
 import { Range } from "react-date-range"
 import { Calendar } from "../inputs/calendar"
 import { Button } from "../button"
+import { timezoneDate } from "@/app/helpers/timezone-date"
 
 interface ListingReservationProps {
   price: number
@@ -45,7 +46,6 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
         value={dateRange}
         disabledDates={disabledDates}
         onChange={(value) => {
-          console.log(`value:`, value)
           onChangeDate(value.selection)
         }}
       />

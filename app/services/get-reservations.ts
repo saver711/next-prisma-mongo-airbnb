@@ -1,4 +1,5 @@
 import { prismadb } from "../libs/prismadb"
+import { timezoneDate } from "../helpers/timezone-date"
 
 interface IParams {
   listingId?: string
@@ -34,17 +35,20 @@ export const getReservations = async (params: IParams) => {
       },
     })
 
-    // Not needed anymore ⬇️ in modern nextjs versions, it is all about returning date objects
-    const safeReservations = reservations.map((reservation) => ({
-      ...reservation,
-      createdAt: reservation.createdAt.toISOString(),
-      startDate: reservation.startDate.toISOString(),
-      endDate: reservation.endDate.toISOString(),
-      listing: {
-        ...reservation.listing,
-        createdAt: reservation.listing.createdAt.toISOString(),
-      },
-    }))
+
+    const safeReservations = reservations.map((reservation) => {
+      return {
+        ...reservation,
+        // المفروض اعمل كدا مع كل التواريخ ال جايه من الداتا بيز
+        createdAt: timezoneDate(reservation.createdAt),
+        startDate: timezoneDate(reservation.startDate),
+        endDate: timezoneDate(reservation.endDate),
+        listing: {
+          ...reservation.listing,
+          createdAt: timezoneDate(reservation.listing.createdAt),
+        },
+      }
+    })
 
     return safeReservations
   } catch (error: any) {
